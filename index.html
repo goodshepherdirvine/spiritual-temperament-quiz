@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spiritual Temperament Inventory</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  :root {
+    --gold: #b8976a;
+    --gold-light: #f5ede0;
+    --gold-dark: #8a6d45;
+    --text: #2c2416;
+    --text-muted: #7a6a55;
+    --border: #ddd0bc;
+    --bg: #fdfaf6;
+    --white: #ffffff;
+    --radius: 8px;
+    --success: #3a7d56;
+    --error: #b84040;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .container { max-width: 700px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .header h1 { font-family: 'Lora', serif; font-size: 28px; font-weight: 400; color: var(--text); margin-bottom: .5rem; }
+  .header .verse { font-family: 'Lora', serif; font-style: italic; font-size: 14px; color: var(--text-muted); margin-top: .75rem; }
+
+  /* Participant fields */
+  .participant-section { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+  .participant-section h2 { font-family: 'Lora', serif; font-size: 16px; font-weight: 400; margin-bottom: 1rem; color: var(--text); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media(max-width:520px){ .field-row { grid-template-columns: 1fr; } }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 13px; font-weight: 500; color: var(--text-muted); letter-spacing: .03em; text-transform: uppercase; }
+  .field input {
+    padding: .55rem .75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--bg);
+    transition: border-color .2s;
+  }
+  .field input:focus { outline: none; border-color: var(--gold); }
+  .field input.error { border-color: var(--error); }
+
+  /* Scale legend */
+  .scale-legend {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: .875rem 1rem;
+    margin-bottom: 1.75rem;
+  }
+  .scale-legend .scale-item { font-size: 13px; color: var(--text-muted); }
+  .scale-legend .scale-item strong { color: var(--text); }
+  .scale-legend .sep { color: var(--border); }
+
+  /* Progress */
+  .progress-wrap { margin-bottom: 1.5rem; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+  .progress-track { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 4px; background: var(--gold); border-radius: 2px; transition: width .3s ease; width: 0%; }
+
+  /* Questions */
+  .q-block {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1rem 1.25rem;
+    margin-bottom: 1rem; transition: border-color .2s;
+  }
+  .q-block.unanswered { border-color: var(--error); }
+  .q-num { font-size: 11px; color: var(--text-muted); letter-spacing: .05em; text-transform: uppercase; margin-bottom: .35rem; }
+  .q-text { font-size: 14px; color: var(--text); line-height: 1.65; margin-bottom: .875rem; }
+  .radio-row { display: flex; gap: 4px; }
+  .radio-row label {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    gap: 4px; cursor: pointer; padding: .5rem .25rem;
+    border: 1px solid var(--border); border-radius: 6px;
+    transition: background .15s, border-color .15s;
+  }
+  .radio-row label:hover { background: var(--gold-light); border-color: var(--gold); }
+  .radio-row input[type=radio] { accent-color: var(--gold-dark); width: 16px; height: 16px; }
+  .radio-row .val { font-size: 13px; font-weight: 500; color: var(--text); }
+  .radio-row .lbl { font-size: 10px; color: var(--text-muted); text-align: center; line-height: 1.3; }
+  .radio-row input[type=radio]:checked + .val { color: var(--gold-dark); }
+
+  /* Submit */
+  .submit-area { margin-top: 2rem; }
+  .warn-msg { font-size: 13px; color: var(--error); background: #fdf0f0; border: 1px solid #f5c5c5; border-radius: var(--radius); padding: .625rem .875rem; margin-bottom: 1rem; display: none; }
+  .btn-submit {
+    width: 100%; padding: .875rem;
+    background: var(--gold-dark); color: var(--white);
+    border: none; border-radius: var(--radius);
+    font-family: 'Lora', serif; font-size: 16px;
+    cursor: pointer; transition: background .2s, transform .1s;
+    letter-spacing: .02em;
+  }
+  .btn-submit:hover { background: var(--gold); }
+  .btn-submit:active { transform: scale(.99); }
+  .btn-submit:disabled { background: var(--text-muted); cursor: not-allowed; }
+
+  /* Sending state */
+  .sending-msg { text-align: center; font-size: 14px; color: var(--text-muted); margin-top: 1rem; display: none; }
+
+  /* Results */
+  .results { display: none; margin-top: 2.5rem; }
+  .results-header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+  .results-header h2 { font-family: 'Lora', serif; font-size: 22px; font-weight: 400; margin-bottom: .5rem; }
+  .results-header p { font-size: 14px; color: var(--text-muted); }
+  .email-confirm { display: inline-block; margin-top: .75rem; font-size: 13px; color: var(--success); background: #edf7f1; border: 1px solid #b8ddc9; border-radius: 20px; padding: 4px 14px; }
+  .email-error { display: inline-block; margin-top: .75rem; font-size: 13px; color: var(--error); background: #fdf0f0; border: 1px solid #f5c5c5; border-radius: 20px; padding: 4px 14px; }
+
+  .section-label {
+    font-size: 11px; font-weight: 500; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin: 1.5rem 0 .75rem;
+  }
+  .t-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1rem 1.25rem;
+    margin-bottom: .75rem;
+  }
+  .t-card.highlighted {
+    border-color: var(--gold);
+    background: var(--gold-light);
+  }
+  .t-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: .5rem; }
+  .t-name-wrap { display: flex; align-items: center; gap: 8px; }
+  .t-name { font-family: 'Lora', serif; font-size: 16px; font-weight: 400; color: var(--text); }
+  .badge {
+    font-size: 11px; padding: 2px 10px; border-radius: 20px;
+    font-weight: 500; letter-spacing: .02em;
+  }
+  .badge-H { background: #b8976a22; color: var(--gold-dark); border: 1px solid var(--gold); }
+  .badge-M { background: #edf7f1; color: var(--success); border: 1px solid #b8ddc9; }
+  .badge-L { background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
+  .t-score-label { font-size: 13px; color: var(--text-muted); }
+  .t-bar-bg { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: .5rem; }
+  .t-bar-fill { height: 6px; border-radius: 3px; transition: width .8s ease; }
+  .t-subtitle { font-size: 13px; color: var(--gold-dark); font-style: italic; font-family: 'Lora', serif; margin-bottom: .25rem; }
+  .t-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+  .legend-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+  .closing-verse {
+    margin-top: 2rem; padding: 1.25rem 1.5rem;
+    border-left: 3px solid var(--gold);
+    background: var(--white);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .closing-verse p { font-family: 'Lora', serif; font-style: italic; font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+  .closing-verse cite { font-size: 12px; color: var(--gold-dark); font-style: normal; display: block; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>Spiritual Temperament Inventory</h1>
+    <p style="font-size:14px;color:var(--text-muted);margin-top:.5rem">Discover the unique way God has wired you to worship and relate to Him</p>
+    <p class="verse">"I praise you because I am fearfully and wonderfully made." — Psalm 139:14</p>
+  </div>
+
+  <!-- Participant Info -->
+  <div class="participant-section">
+    <h2>Your Information</h2>
+    <div class="field-row">
+      <div class="field">
+        <label for="taker-name">Full Name</label>
+        <input type="text" id="taker-name" placeholder="Your name" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="taker-email">Email Address</label>
+        <input type="email" id="taker-email" placeholder="your@email.com" autocomplete="email">
+      </div>
+    </div>
+  </div>
+
+  <!-- Scale -->
+  <div class="scale-legend">
+    <span class="scale-item"><strong>4</strong> = Very true</span><span class="sep">·</span>
+    <span class="scale-item"><strong>3</strong> = Often true</span><span class="sep">·</span>
+    <span class="scale-item"><strong>2</strong> = Sometimes true</span><span class="sep">·</span>
+    <span class="scale-item"><strong>1</strong> = Rarely true</span><span class="sep">·</span>
+    <span class="scale-item"><strong>0</strong> = Never true</span>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Progress</span>
+      <span id="prog-text">0 of 54 answered</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+  </div>
+
+  <!-- Questions -->
+  <div id="questions"></div>
+
+  <!-- Submit -->
+  <div class="submit-area">
+    <div class="warn-msg" id="warn"></div>
+    <button class="btn-submit" id="submit-btn" onclick="submitForm()">Submit &amp; View My Results</button>
+    <div class="sending-msg" id="sending">Sending your results by email…</div>
+  </div>
+
+  <!-- Results -->
+  <div class="results" id="results">
+    <div class="results-header">
+      <h2>Your Spiritual Temperament Results</h2>
+      <p id="results-name"></p>
+      <span id="email-status"></span>
+    </div>
+    <div class="legend-row">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>High (18–24) — passionate</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#3a7d56"></div>Moderate (12–17) — pleasurable</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#aaa"></div>Low (0–11) — developing</div>
+    </div>
+    <div id="result-cards"></div>
+    <div class="closing-verse">
+      <p>No temperament is better than another. Jesus, in His humanity, displayed a perfect balance in all human temperaments. Your results reflect the unique way God has created you to glorify Him and draw near to Him.</p>
+      <cite>— Adapted from Myra Perrine, <em>What's Your God Language?</em> (Tyndale, 2007)</cite>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){ emailjs.init({ publicKey: "IdsiIh_c_Ja1a5ZHP" }); })();
+
+const SERVICE_ID = "service_m113odb";
+const TEMPLATE_ID = "template_mj887oq";
+
+const questions = [
+  "Taking a stand for what is right in this world and opposing what is wrong causes me to draw closer to God, therefore, I think it's important to stay current on issues and urge others to do so also.",
+  "I would enjoy having several hours to spend alone in silent prayer.",
+  "I sense God's pleasure when I am caring for others, e.g. helping a friend who is in need, giving a ride to someone without a car, or working in the soup kitchen in my community of faith.",
+  "I would enjoy reading about or talking with someone who knows God deeply so that I could learn how to have a more intimate friendship with Jesus.",
+  "I would like to go to a workshop that teaches how to worship God through dance or how to praise Him at home through music.",
+  "I think it is imperative for Christians to study the essential doctrines of the faith, while letting their feelings and experiences with God be a peripheral matter.",
+  "I usually feel closer to God when I am out in nature than when I spend time indoors in church.",
+  "I find pleasure in worshipping God as I gaze at a beautifully translucent stained-glass window in a church where some aspect of my Lord is depicted.",
+  "I would enjoy following a Christian calendar with my family during our prayer times, or even using the Book of Common Prayer.",
+  "The suffering and evil in this world really bother me, and I feel strongly that the apathy of the masses must be challenged.",
+  "Praying alone or worshipping God in silence is usually more meaningful to me than seeking Him in a group setting.",
+  "Being a caring servant of God who puts faith into action is very important to me.",
+  "I feel close to God when He speaks words of love to me as if He were my dearest friend.",
+  "God is an awesome God, and during worship at church, we need to express our enthusiasm in song as opposed to sitting uninvolved as if we were bored.",
+  "I buy a lot of Christian books because I appreciate thought-provoking reading that challenges me to think more deeply and broadly about aspects of my faith.",
+  "I derive great joy from praying or communing with God as I sit beside a brook, walk outdoors, or see His handiwork in nature.",
+  "When I enter a stunningly beautiful church, just the loveliness around me lifts my heart to God, increasing my passion for Him.",
+  "The Christian faith — rooted in centuries of Godly tradition — must continually find its expression in the corporate life, which always takes precedence over individualized worship.",
+  "When I see or read about someone who is confronting evil or taking positive action to change the unjust conditions in the world, my love for God is stirred.",
+  "When I am alone with God, I feel closer to Him, since I can most readily focus on His presence in quiet settings.",
+  "I am not pleased when I see Christians who love God yet walk right past a sick neighbor or a family in need without helping them.",
+  "I would enjoy having uninterrupted time each day to sit alone with Jesus, gazing into His face, listening to His voice, or simply basking in the warmth of His love.",
+  "I would like to learn more about how God uses dreams to lead His people.",
+  "Knowing the truth and having a mind ordered by 'right thinking' is very important to me.",
+  "I would be thrilled if our church held a service on the beach or in a wooded glen — somewhere outside in God's creation.",
+  "A High Church service with formal Communion or the Eucharist is something I would enjoy.",
+  "I value greatly the idea of having a prayer ritual (or rule), especially as it connects me with other believers who are observing the same practice.",
+  "It is essential that injustice and the status quo be confronted and it's the Lord who compels me to take action when it comes to poverty, prostitution, slavery, the conditions in our local schools, or the neglect/oppression of the aged.",
+  "I would enjoy reading about the monastic life and learning how God calls some of His people to live a very simple life for His glory.",
+  "When I am helping those in need, I experience God's love, whether they are weak, poor, sick, or imprisoned.",
+  "In my heart, I desire for God to be my closest friend and most intimate companion.",
+  "I like listening to worship music at home or in my car, because almost nothing brings life to me like praising God.",
+  "My love for God grows when I take an extended period of time to study His Word using rich sourcebooks, such as well-documented commentaries.",
+  "If I could go to a garden or a lake to be with God, I would be very happy.",
+  "How I wish I could have experienced the wonderfully sensuous Old Testament style of worship, with its poignant smells and colorful regalia.",
+  "A seminar describing the meaning of symbols and liturgy in the church is something I would enjoy attending.",
+  "I can't identify with Christians who lack compassion or fail to take action when they see wrong occurring in their immediate contexts.",
+  "The thought of spending a few days at a monastery to pray and meditate upon the Lord in solitude sounds delightful.",
+  "I feel like I am showing my love for God when I am helping 'the least of these' by meeting practical needs, e.g. fixing a meal or helping with a household repair.",
+  "When I am with God, I tend to picture Him as my Shepherd, Abba, or Friend.",
+  "When I worship God in the congregation, my heart is so filled to overflowing with love for Him that I just want to stand up, clap, or raise my hands.",
+  "Hearing a renowned speaker present solid research about historical, biblical truth would really interest me, and it would be delightful to discuss this content with a group of informed thinkers.",
+  "When I am in the beauty of God's creation, I find myself spiritually refreshed because being with the Lord in the outdoors is so inspiring.",
+  "I love being in a church where all my senses come alive so that I can almost see, smell, hear, taste, and touch the majesty of God.",
+  "One of the best parts of my relationship with the Lord is worshipping Him in familiar ways, using the meaningful traditions that I remember from my childhood.",
+  "A presentation on 'God's Heart of Justice: Why Do Bad Things Happen and Good People Just Watch!' is something I would like to attend.",
+  "Living an ordered life that utilizes the spiritual disciplines is very important to me.",
+  "I would like to improve my skills in lay counseling to be better equipped to help those in need.",
+  "When spending time with God, I enjoy contemplating His love and affection.",
+  "Praising God is meant to be a joyous and jubilant experience!",
+  "Many of my closest moments with God are when I'm learning something new or my mind is stimulated about some important aspect of His Kingdom.",
+  "I would be delighted to see a picturesque movie in church entitled Worshiping God through Creation.",
+  "I like the thought of using art or drawing in my worship of God or when I journal or pray.",
+  "The history of the faith and its age-old rituals move me greatly."
+];
+
+const temperaments = [
+  { name: "Activist",      subtitle: "Loving God through confrontation with evil",     desc: "Bold desire to see injustice challenged and good prevail. Energized by courageously coming against evil and rallying for the good.", qNums: [1,10,19,28,37,46] },
+  { name: "Ascetic",       subtitle: "Loving God through solitude and simplicity",      desc: "Values silence, stillness, and simplicity. Develops a rich inner life through ordered discipline, self-denial, and hard work done unto the Lord.", qNums: [2,11,20,29,38,47] },
+  { name: "Caregiver",     subtitle: "Loving God through serving others",               desc: "Discerns practical needs and moves to address them. Feels most alive and close to God when in volunteer service, knowing the Kingdom is being advanced.", qNums: [3,12,21,30,39,48] },
+  { name: "Contemplative", subtitle: "Loving God through adoration",                   desc: "Enjoys extended time simply delighting in God's presence and love. All of life is about developing greater intimacy with Jesus.", qNums: [4,13,22,31,40,49] },
+  { name: "Enthusiast",    subtitle: "Loving God through mystery and celebration",      desc: "Loves God with gusto — a cheerleader for the faith. Feels close to God when gathering people to sing, worship, and celebrate.", qNums: [5,14,23,32,41,50] },
+  { name: "Intellectual",  subtitle: "Loving God through the mind",                    desc: "Loves God best through deep study and careful thought about Scripture and truth. Right thinking is essential; gets bored when the mind is not stimulated.", qNums: [6,15,24,33,42,51] },
+  { name: "Naturalist",    subtitle: "Loving God through experiencing Him outdoors",    desc: "Comes alive and experiences great awareness of God when surrounded by the splendor of creation. The outdoors is a classroom for the soul.", qNums: [7,16,25,34,43,52] },
+  { name: "Sensate",       subtitle: "Loving God through the senses",                  desc: "Uses all senses — taste, touch, smell, sound, and sight — to focus more fully on Jesus. Drawn to beauty: architecture, music, art, incense, and stained glass.", qNums: [8,17,26,35,44,53] },
+  { name: "Traditionalist",subtitle: "Loving God through ritual and symbol",           desc: "Enjoys faith practices done in familiar, meaningful ways. Rituals and traditions connect to the saints of old and usher in God's presence.", qNums: [9,18,27,36,45,54] }
+];
+
+// Build questions
+const container = document.getElementById('questions');
+questions.forEach((q, i) => {
+  const d = document.createElement('div');
+  d.className = 'q-block';
+  d.id = `qblock-${i+1}`;
+  const labels = ['Never','Rarely','Sometimes','Often','Very true'];
+  let radios = '<div class="radio-row">';
+  for (let v = 0; v <= 4; v++) {
+    radios += `<label>
+      <input type="radio" name="q${i+1}" value="${v}" onchange="updateProgress()">
+      <span class="val">${v}</span>
+      <span class="lbl">${labels[v]}</span>
+    </label>`;
+  }
+  radios += '</div>';
+  d.innerHTML = `<div class="q-num">Question ${i+1} of 54</div><div class="q-text">${q}</div>${radios}`;
+  container.appendChild(d);
+});
+
+function updateProgress() {
+  let n = 0;
+  for (let i = 1; i <= 54; i++) { if (document.querySelector(`input[name="q${i}"]:checked`)) n++; }
+  document.getElementById('prog').style.width = (n / 54 * 100) + '%';
+  document.getElementById('prog-text').textContent = `${n} of 54 answered`;
+}
+
+function getLevel(s) { return s >= 18 ? 'H' : s >= 12 ? 'M' : 'L'; }
+function getLevelLabel(s) { return s >= 18 ? 'High' : s >= 12 ? 'Moderate' : 'Low'; }
+function getBarColor(s) { return s >= 18 ? 'var(--gold)' : s >= 12 ? '#3a7d56' : '#aaa'; }
+
+function buildEmailText(name, sorted, scores) {
+  const top = sorted.slice(0, 3);
+  let topText = '';
+  top.forEach(({i}, idx) => {
+    const t = temperaments[i];
+    const s = scores[i];
+    topText += `${idx+1}. ${t.name} — ${s}/24 (${getLevelLabel(s)})\n   ${t.subtitle}\n   ${t.desc}\n\n`;
+  });
+  let allText = '';
+  sorted.forEach(({i}, idx) => {
+    const t = temperaments[i];
+    const s = scores[i];
+    allText += `${idx+1}. ${t.name}: ${s}/24 — ${getLevelLabel(s)}\n`;
+  });
+  const date = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  return { topText, allText, date };
+}
+
+async function submitForm() {
+  const nameEl = document.getElementById('taker-name');
+  const emailEl = document.getElementById('taker-email');
+  const name = nameEl.value.trim();
+  const email = emailEl.value.trim();
+
+  // Validate name/email
+  let formErrors = [];
+  if (!name) { nameEl.classList.add('error'); formErrors.push('name'); } else { nameEl.classList.remove('error'); }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { emailEl.classList.add('error'); formErrors.push('valid email address'); } else { emailEl.classList.remove('error'); }
+
+  // Validate questions
+  let missing = [];
+  for (let i = 1; i <= 54; i++) {
+    const b = document.getElementById(`qblock-${i}`);
+    if (!document.querySelector(`input[name="q${i}"]:checked`)) {
+      missing.push(i); b.classList.add('unanswered');
+    } else { b.classList.remove('unanswered'); }
+  }
+
+  const warn = document.getElementById('warn');
+  if (formErrors.length > 0 || missing.length > 0) {
+    let msg = '';
+    if (formErrors.length) msg += `Please enter your ${formErrors.join(' and ')}. `;
+    if (missing.length) msg += `Please answer all questions. Missing: ${missing.slice(0,5).join(', ')}${missing.length > 5 ? ` and ${missing.length-5} more` : ''}.`;
+    warn.textContent = msg;
+    warn.style.display = 'block';
+    (formErrors.length ? nameEl : document.getElementById(`qblock-${missing[0]}`)).scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  warn.style.display = 'none';
+
+  // Calculate scores
+  const scores = Array(9).fill(0);
+  for (let i = 1; i <= 54; i++) {
+    const v = parseInt(document.querySelector(`input[name="q${i}"]:checked`).value);
+    const tIdx = temperaments.findIndex(t => t.qNums.includes(i));
+    if (tIdx >= 0) scores[tIdx] += v;
+  }
+  const sorted = scores.map((s, i) => ({ s, i })).sort((a, b) => b.s - a.s);
+
+  // Show results immediately
+  displayResults(name, sorted, scores);
+
+  // Send email
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  document.getElementById('sending').style.display = 'block';
+
+  const { topText, allText, date } = buildEmailText(name, sorted, scores);
+
+  try {
+    await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+      taker_name: name,
+      taker_email: email,
+      to_email: email,
+      submitted_date: date,
+      top_temperaments: topText,
+      all_scores: allText
+    });
+    document.getElementById('email-status').className = 'email-confirm';
+    document.getElementById('email-status').textContent = `✓ Results sent to ${email}`;
+  } catch (err) {
+    document.getElementById('email-status').className = 'email-error';
+    document.getElementById('email-status').textContent = 'Email could not be sent — please screenshot your results.';
+    console.error('EmailJS error:', err);
+  }
+
+  document.getElementById('sending').style.display = 'none';
+  btn.disabled = false;
+  btn.textContent = 'Submit & View My Results';
+}
+
+function displayResults(name, sorted, scores) {
+  document.getElementById('results-name').textContent = `Results for ${name}`;
+
+  const cards = document.getElementById('result-cards');
+  cards.innerHTML = '';
+
+  // Section: top temperaments
+  const topLabel = document.createElement('div');
+  topLabel.className = 'section-label';
+  topLabel.textContent = 'Your top temperaments';
+  cards.appendChild(topLabel);
+
+  sorted.slice(0, 3).forEach(({ i }) => {
+    cards.appendChild(buildCard(i, scores[i], true));
+  });
+
+  // Section: all scores
+  const allLabel = document.createElement('div');
+  allLabel.className = 'section-label';
+  allLabel.textContent = 'All temperaments ranked';
+  cards.appendChild(allLabel);
+
+  sorted.forEach(({ i }) => {
+    cards.appendChild(buildCard(i, scores[i], false));
+  });
+
+  const results = document.getElementById('results');
+  results.style.display = 'block';
+  results.scrollIntoView({ behavior: 'smooth' });
+}
+
+function buildCard(i, score, highlight) {
+  const t = temperaments[i];
+  const pct = Math.round(score / 24 * 100);
+  const level = getLevel(score);
+  const card = document.createElement('div');
+  card.className = 't-card' + (highlight ? ' highlighted' : '');
+  card.innerHTML = `
+    <div class="t-top-row">
+      <div class="t-name-wrap">
+        <span class="t-name">${t.name}</span>
+        <span class="badge badge-${level}">${getLevelLabel(score)}</span>
+      </div>
+      <span class="t-score-label">${score} / 24</span>
+    </div>
+    <div class="t-bar-bg"><div class="t-bar-fill" style="width:${pct}%;background:${getBarColor(score)}"></div></div>
+    ${highlight ? `<div class="t-subtitle">${t.subtitle}</div><div class="t-desc">${t.desc}</div>` : `<div class="t-desc" style="font-size:12px;color:var(--text-muted)">${t.subtitle}</div>`}
+  `;
+  return card;
+}
+</script>
+</body>
+</html>
