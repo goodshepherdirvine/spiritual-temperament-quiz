@@ -620,6 +620,11 @@ function displayResults(name, sorted, scores) {
   results.scrollIntoView({ behavior: 'smooth' });
 }
 
+function notifyHeight() {
+  window.parent.postMessage({ type: 'iframeResize', height: document.documentElement.scrollHeight }, '*');
+}
+new ResizeObserver(notifyHeight).observe(document.body);
+
 function buildCard(i, score, highlight) {
   const t = temperaments[i];
   const pct = Math.round(score / 24 * 100);
