@@ -435,6 +435,10 @@ function buildQuestionBlock(i) {
   }
 })();
 
+function sendHeight() {
+  window.parent.postMessage({ type: 'quizResize', height: document.documentElement.scrollHeight }, '*');
+}
+
 function showPage(n) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(`page-${n}`).classList.add('active');
@@ -444,7 +448,10 @@ function showPage(n) {
 
   updateProgress();
   window.scrollTo(0, 0);
+  setTimeout(sendHeight, 50);
 }
+
+window.addEventListener('load', sendHeight);
 
 function validateInfo() {
   const nameEl = document.getElementById('taker-name');
@@ -641,6 +648,5 @@ function buildCard(i, score, highlight) {
   return card;
 }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4/js/iframeResizer.contentWindow.min.js"></script>
 </body>
 </html>
