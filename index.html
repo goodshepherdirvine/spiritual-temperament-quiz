@@ -36,8 +36,9 @@
   .header .verse { font-family: 'Lora', serif; font-style: italic; font-size: 14px; color: var(--text-muted); margin-top: .75rem; }
 
   /* Participant fields */
-  .participant-section { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem; }
+  .participant-section { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.25rem; }
   .participant-section h2 { font-family: 'Lora', serif; font-size: 16px; font-weight: 400; margin-bottom: 1rem; color: var(--text); }
+  .participant-intro { font-size: 14px; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.65; }
   .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   @media(max-width:520px){ .field-row { grid-template-columns: 1fr; } }
   .field { display: flex; flex-direction: column; gap: 5px; }
@@ -60,7 +61,7 @@
     display: flex; gap: 6px; flex-wrap: wrap;
     background: var(--white); border: 1px solid var(--border);
     border-radius: var(--radius); padding: .875rem 1rem;
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.25rem;
   }
   .scale-legend .scale-item { font-size: 13px; color: var(--text-muted); }
   .scale-legend .scale-item strong { color: var(--text); }
@@ -94,11 +95,62 @@
   .radio-row .lbl { font-size: 10px; color: var(--text-muted); text-align: center; line-height: 1.3; }
   .radio-row input[type=radio]:checked + .val { color: var(--gold-dark); }
 
+  /* Page system */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* Navigation */
+  .nav-row { display: flex; gap: .75rem; margin-top: 1.75rem; align-items: stretch; }
+  .btn-back {
+    padding: .75rem 1.25rem;
+    background: var(--white);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background .2s, border-color .2s, color .2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .btn-back:hover { background: var(--bg); border-color: var(--gold); color: var(--text); }
+  .btn-next {
+    flex: 1;
+    padding: .875rem;
+    background: var(--gold-dark);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Lora', serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+    letter-spacing: .02em;
+  }
+  .btn-next:hover { background: var(--gold); }
+  .btn-next:active { transform: scale(.99); }
+  .btn-begin {
+    width: 100%;
+    padding: .875rem;
+    background: var(--gold-dark);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Lora', serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+    letter-spacing: .02em;
+    margin-top: .25rem;
+  }
+  .btn-begin:hover { background: var(--gold); }
+  .btn-begin:active { transform: scale(.99); }
+
   /* Submit */
-  .submit-area { margin-top: 2rem; }
-  .warn-msg { font-size: 13px; color: var(--error); background: #fdf0f0; border: 1px solid #f5c5c5; border-radius: var(--radius); padding: .625rem .875rem; margin-bottom: 1rem; display: none; }
   .btn-submit {
-    width: 100%; padding: .875rem;
+    flex: 1;
+    padding: .875rem;
     background: var(--gold-dark); color: var(--white);
     border: none; border-radius: var(--radius);
     font-family: 'Lora', serif; font-size: 16px;
@@ -108,6 +160,9 @@
   .btn-submit:hover { background: var(--gold); }
   .btn-submit:active { transform: scale(.99); }
   .btn-submit:disabled { background: var(--text-muted); cursor: not-allowed; }
+
+  /* Warn */
+  .warn-msg { font-size: 13px; color: var(--error); background: #fdf0f0; border: 1px solid #f5c5c5; border-radius: var(--radius); padding: .625rem .875rem; margin-top: 1rem; display: none; }
 
   /* Sending state */
   .sending-msg { text-align: center; font-size: 14px; color: var(--text-muted); margin-top: 1rem; display: none; }
@@ -167,54 +222,49 @@
 <body>
 <div class="container">
 
-  <div class="header">
-    <h1>Spiritual Temperament Inventory</h1>
-    <p style="font-size:14px;color:var(--text-muted);margin-top:.5rem">Discover the unique way God has wired you to worship and relate to Him</p>
-    <p class="verse">"I praise you because I am fearfully and wonderfully made." — Psalm 139:14</p>
+  <!-- Page 0: Participant Info -->
+  <div id="page-0" class="page active">
+    <div class="participant-section">
+      <h2>Your Information</h2>
+      <p class="participant-intro">This inventory includes 54 statements about how people experience God. Rate each statement on a scale of 0–4 based on how true it is for you. There are no right or wrong answers — answer honestly based on your actual experience, not how you think you should respond.</p>
+      <div class="field-row">
+        <div class="field">
+          <label for="taker-name">Full Name</label>
+          <input type="text" id="taker-name" placeholder="Your name" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="taker-email">Email Address</label>
+          <input type="email" id="taker-email" placeholder="your@email.com" autocomplete="email">
+        </div>
+      </div>
+    </div>
+    <div class="warn-msg" id="warn-0"></div>
+    <button class="btn-begin" onclick="goNext()">Begin Survey →</button>
   </div>
 
-  <!-- Participant Info -->
-  <div class="participant-section">
-    <h2>Your Information</h2>
-    <div class="field-row">
-      <div class="field">
-        <label for="taker-name">Full Name</label>
-        <input type="text" id="taker-name" placeholder="Your name" autocomplete="name">
+  <!-- Survey meta: scale legend + progress bar (shown on question pages) -->
+  <div id="survey-meta" style="display:none">
+    <div class="scale-legend">
+      <span class="scale-item"><strong>4</strong> = Very true</span><span class="sep">·</span>
+      <span class="scale-item"><strong>3</strong> = Often true</span><span class="sep">·</span>
+      <span class="scale-item"><strong>2</strong> = Sometimes true</span><span class="sep">·</span>
+      <span class="scale-item"><strong>1</strong> = Rarely true</span><span class="sep">·</span>
+      <span class="scale-item"><strong>0</strong> = Never true</span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="page-indicator">Page 1 of 11</span>
+        <span id="prog-text">0 of 54 answered</span>
       </div>
-      <div class="field">
-        <label for="taker-email">Email Address</label>
-        <input type="email" id="taker-email" placeholder="your@email.com" autocomplete="email">
-      </div>
+      <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
     </div>
   </div>
 
-  <!-- Scale -->
-  <div class="scale-legend">
-    <span class="scale-item"><strong>4</strong> = Very true</span><span class="sep">·</span>
-    <span class="scale-item"><strong>3</strong> = Often true</span><span class="sep">·</span>
-    <span class="scale-item"><strong>2</strong> = Sometimes true</span><span class="sep">·</span>
-    <span class="scale-item"><strong>1</strong> = Rarely true</span><span class="sep">·</span>
-    <span class="scale-item"><strong>0</strong> = Never true</span>
-  </div>
+  <!-- Question pages (generated by JS) -->
+  <div id="question-pages"></div>
 
-  <!-- Progress -->
-  <div class="progress-wrap">
-    <div class="progress-label">
-      <span>Progress</span>
-      <span id="prog-text">0 of 54 answered</span>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
-  </div>
-
-  <!-- Questions -->
-  <div id="questions"></div>
-
-  <!-- Submit -->
-  <div class="submit-area">
-    <div class="warn-msg" id="warn"></div>
-    <button class="btn-submit" id="submit-btn" onclick="submitForm()">Submit &amp; View My Results</button>
-    <div class="sending-msg" id="sending">Sending your results by email…</div>
-  </div>
+  <!-- Sending state -->
+  <div class="sending-msg" id="sending">Sending your results by email…</div>
 
   <!-- Results -->
   <div class="results" id="results">
@@ -238,7 +288,7 @@
 </div>
 
 <script>
-(function(){ emailjs.init({ publicKey: "IdsiIh_c_Ja1a5ZHP" }); })();
+try { emailjs.init({ publicKey: "IdsiIh_c_Ja1a5ZHP" }); } catch(e) {}
 
 const SERVICE_ID = "service_m113odb";
 const TEMPLATE_ID = "template_mj887oq";
@@ -312,31 +362,163 @@ const temperaments = [
   { name: "Traditionalist",subtitle: "Loving God through ritual and symbol",           desc: "Enjoys faith practices done in familiar, meaningful ways. Rituals and traditions connect to the saints of old and usher in God's presence.", qNums: [9,18,27,36,45,54] }
 ];
 
-// Build questions
-const container = document.getElementById('questions');
-questions.forEach((q, i) => {
+const QPER_PAGE = 5;
+const Q_PAGES = Math.ceil(questions.length / QPER_PAGE); // 11
+let currentPage = 0;
+
+// Build a single question block element (0-indexed)
+function buildQuestionBlock(i) {
   const d = document.createElement('div');
   d.className = 'q-block';
-  d.id = `qblock-${i+1}`;
-  const labels = ['Never','Rarely','Sometimes','Often','Very true'];
+  d.id = `qblock-${i + 1}`;
+  const labels = ['Never', 'Rarely', 'Sometimes', 'Often', 'Very true'];
   let radios = '<div class="radio-row">';
   for (let v = 0; v <= 4; v++) {
     radios += `<label>
-      <input type="radio" name="q${i+1}" value="${v}" onchange="updateProgress()">
+      <input type="radio" name="q${i + 1}" value="${v}" onchange="updateProgress()">
       <span class="val">${v}</span>
       <span class="lbl">${labels[v]}</span>
     </label>`;
   }
   radios += '</div>';
-  d.innerHTML = `<div class="q-num">Question ${i+1} of 54</div><div class="q-text">${q}</div>${radios}`;
-  container.appendChild(d);
-});
+  d.innerHTML = `<div class="q-num">Question ${i + 1} of 54</div><div class="q-text">${questions[i]}</div>${radios}`;
+  return d;
+}
+
+// Build all question pages into the DOM
+(function buildQuestionPages() {
+  const container = document.getElementById('question-pages');
+  for (let p = 1; p <= Q_PAGES; p++) {
+    const pageEl = document.createElement('div');
+    pageEl.className = 'page';
+    pageEl.id = `page-${p}`;
+
+    const qStart = (p - 1) * QPER_PAGE;
+    const qEnd = Math.min(qStart + QPER_PAGE, questions.length);
+    for (let i = qStart; i < qEnd; i++) {
+      pageEl.appendChild(buildQuestionBlock(i));
+    }
+
+    // Warn message
+    const warn = document.createElement('div');
+    warn.className = 'warn-msg';
+    warn.id = `warn-${p}`;
+    pageEl.appendChild(warn);
+
+    // Navigation row
+    const nav = document.createElement('div');
+    nav.className = 'nav-row';
+
+    const backBtn = document.createElement('button');
+    backBtn.className = 'btn-back';
+    backBtn.textContent = '← Back';
+    backBtn.onclick = goBack;
+    nav.appendChild(backBtn);
+
+    if (p < Q_PAGES) {
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'btn-next';
+      nextBtn.textContent = 'Next →';
+      nextBtn.onclick = goNext;
+      nav.appendChild(nextBtn);
+    } else {
+      const submitBtn = document.createElement('button');
+      submitBtn.className = 'btn-submit';
+      submitBtn.id = 'submit-btn';
+      submitBtn.textContent = 'Submit & View My Results';
+      submitBtn.onclick = submitForm;
+      nav.appendChild(submitBtn);
+    }
+
+    pageEl.appendChild(nav);
+    container.appendChild(pageEl);
+  }
+})();
+
+function showPage(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`page-${n}`).classList.add('active');
+  currentPage = n;
+
+  document.getElementById('survey-meta').style.display = (n >= 1) ? 'block' : 'none';
+
+  updateProgress();
+  window.scrollTo(0, 0);
+}
+
+function validateInfo() {
+  const nameEl = document.getElementById('taker-name');
+  const emailEl = document.getElementById('taker-email');
+  const name = nameEl.value.trim();
+  const email = emailEl.value.trim();
+  const errors = [];
+
+  if (!name) { nameEl.classList.add('error'); errors.push('name'); }
+  else { nameEl.classList.remove('error'); }
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    emailEl.classList.add('error'); errors.push('valid email address');
+  } else { emailEl.classList.remove('error'); }
+
+  const warn = document.getElementById('warn-0');
+  if (errors.length) {
+    warn.textContent = `Please enter your ${errors.join(' and ')}.`;
+    warn.style.display = 'block';
+    return false;
+  }
+  warn.style.display = 'none';
+  return true;
+}
+
+function validateCurrentQuestions() {
+  const qStart = (currentPage - 1) * QPER_PAGE + 1;
+  const qEnd = Math.min(qStart + QPER_PAGE - 1, 54);
+  const missing = [];
+
+  for (let i = qStart; i <= qEnd; i++) {
+    const block = document.getElementById(`qblock-${i}`);
+    if (!document.querySelector(`input[name="q${i}"]:checked`)) {
+      missing.push(i);
+      block.classList.add('unanswered');
+    } else {
+      block.classList.remove('unanswered');
+    }
+  }
+
+  const warn = document.getElementById(`warn-${currentPage}`);
+  if (missing.length) {
+    warn.textContent = `Please answer all questions before continuing. Missing: ${missing.join(', ')}.`;
+    warn.style.display = 'block';
+    return false;
+  }
+  warn.style.display = 'none';
+  return true;
+}
+
+function goNext() {
+  if (currentPage === 0) {
+    if (!validateInfo()) return;
+    showPage(1);
+  } else if (currentPage < Q_PAGES) {
+    if (!validateCurrentQuestions()) return;
+    showPage(currentPage + 1);
+  }
+}
+
+function goBack() {
+  if (currentPage > 0) showPage(currentPage - 1);
+}
 
 function updateProgress() {
   let n = 0;
-  for (let i = 1; i <= 54; i++) { if (document.querySelector(`input[name="q${i}"]:checked`)) n++; }
+  for (let i = 1; i <= 54; i++) {
+    if (document.querySelector(`input[name="q${i}"]:checked`)) n++;
+  }
   document.getElementById('prog').style.width = (n / 54 * 100) + '%';
   document.getElementById('prog-text').textContent = `${n} of 54 answered`;
+  if (currentPage >= 1) {
+    document.getElementById('page-indicator').textContent = `Page ${currentPage} of ${Q_PAGES}`;
+  }
 }
 
 function getLevel(s) { return s >= 18 ? 'H' : s >= 12 ? 'M' : 'L'; }
@@ -346,52 +528,26 @@ function getBarColor(s) { return s >= 18 ? 'var(--gold)' : s >= 12 ? '#3a7d56' :
 function buildEmailText(name, sorted, scores) {
   const top = sorted.slice(0, 3);
   let topText = '';
-  top.forEach(({i}, idx) => {
+  top.forEach(({ i }, idx) => {
     const t = temperaments[i];
     const s = scores[i];
-    topText += `${idx+1}. ${t.name} — ${s}/24 (${getLevelLabel(s)})\n   ${t.subtitle}\n   ${t.desc}\n\n`;
+    topText += `${idx + 1}. ${t.name} — ${s}/24 (${getLevelLabel(s)})\n   ${t.subtitle}\n   ${t.desc}\n\n`;
   });
   let allText = '';
-  sorted.forEach(({i}, idx) => {
+  sorted.forEach(({ i }, idx) => {
     const t = temperaments[i];
     const s = scores[i];
-    allText += `${idx+1}. ${t.name}: ${s}/24 — ${getLevelLabel(s)}\n`;
+    allText += `${idx + 1}. ${t.name}: ${s}/24 — ${getLevelLabel(s)}\n`;
   });
-  const date = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   return { topText, allText, date };
 }
 
 async function submitForm() {
-  const nameEl = document.getElementById('taker-name');
-  const emailEl = document.getElementById('taker-email');
-  const name = nameEl.value.trim();
-  const email = emailEl.value.trim();
+  if (!validateCurrentQuestions()) return;
 
-  // Validate name/email
-  let formErrors = [];
-  if (!name) { nameEl.classList.add('error'); formErrors.push('name'); } else { nameEl.classList.remove('error'); }
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { emailEl.classList.add('error'); formErrors.push('valid email address'); } else { emailEl.classList.remove('error'); }
-
-  // Validate questions
-  let missing = [];
-  for (let i = 1; i <= 54; i++) {
-    const b = document.getElementById(`qblock-${i}`);
-    if (!document.querySelector(`input[name="q${i}"]:checked`)) {
-      missing.push(i); b.classList.add('unanswered');
-    } else { b.classList.remove('unanswered'); }
-  }
-
-  const warn = document.getElementById('warn');
-  if (formErrors.length > 0 || missing.length > 0) {
-    let msg = '';
-    if (formErrors.length) msg += `Please enter your ${formErrors.join(' and ')}. `;
-    if (missing.length) msg += `Please answer all questions. Missing: ${missing.slice(0,5).join(', ')}${missing.length > 5 ? ` and ${missing.length-5} more` : ''}.`;
-    warn.textContent = msg;
-    warn.style.display = 'block';
-    (formErrors.length ? nameEl : document.getElementById(`qblock-${missing[0]}`)).scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
-  }
-  warn.style.display = 'none';
+  const name = document.getElementById('taker-name').value.trim();
+  const email = document.getElementById('taker-email').value.trim();
 
   // Calculate scores
   const scores = Array(9).fill(0);
@@ -402,7 +558,7 @@ async function submitForm() {
   }
   const sorted = scores.map((s, i) => ({ s, i })).sort((a, b) => b.s - a.s);
 
-  // Show results immediately
+  // Show results
   displayResults(name, sorted, scores);
 
   // Send email
@@ -441,7 +597,6 @@ function displayResults(name, sorted, scores) {
   const cards = document.getElementById('result-cards');
   cards.innerHTML = '';
 
-  // Section: top temperaments
   const topLabel = document.createElement('div');
   topLabel.className = 'section-label';
   topLabel.textContent = 'Your top temperaments';
@@ -451,7 +606,6 @@ function displayResults(name, sorted, scores) {
     cards.appendChild(buildCard(i, scores[i], true));
   });
 
-  // Section: all scores
   const allLabel = document.createElement('div');
   allLabel.className = 'section-label';
   allLabel.textContent = 'All temperaments ranked';
