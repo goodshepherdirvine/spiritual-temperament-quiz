@@ -620,10 +620,6 @@ function displayResults(name, sorted, scores) {
   results.scrollIntoView({ behavior: 'smooth' });
 }
 
-function notifyHeight() {
-  window.parent.postMessage({ type: 'iframeResize', height: document.documentElement.scrollHeight }, '*');
-}
-new ResizeObserver(() => requestAnimationFrame(notifyHeight)).observe(document.body);
 
 function buildCard(i, score, highlight) {
   const t = temperaments[i];
@@ -645,5 +641,6 @@ function buildCard(i, score, highlight) {
   return card;
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4/js/iframeResizer.contentWindow.min.js"></script>
 </body>
 </html>
