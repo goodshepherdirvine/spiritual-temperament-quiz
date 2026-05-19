@@ -514,12 +514,24 @@ async function submitQuiz() {
 
   displayResults(name, sorted, scores);
 
-  const { topText, allText, date } = buildEmailText(name, sorted, scores);
+  const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  const params = { taker_name: name, taker_email: email, to_email: email, submitted_date: date };
+
+  sorted.slice(0, 3).forEach(({ i }, idx) => {
+    const t = temperaments[i], s = scores[i];
+    params[`top${idx + 1}_name`]     = t.name;
+    params[`top${idx + 1}_score`]    = `${s}/24`;
+    params[`top${idx + 1}_level`]    = getLevelLabel(s);
+    params[`top${idx + 1}_subtitle`] = t.subtitle;
+    params[`top${idx + 1}_desc`]     = t.desc;
+  });
+
+  sorted.forEach(({ i }, idx) => {
+    params[`rank${idx + 1}`] = `${temperaments[i].name}: ${scores[i]}/24 — ${getLevelLabel(scores[i])}`;
+  });
+
   try {
-    await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-      taker_name: name, taker_email: email, to_email: email,
-      submitted_date: date, top_temperaments: topText, all_scores: allText
-    });
+    await emailjs.send(SERVICE_ID, TEMPLATE_ID, params);
     document.getElementById('email-status').className   = 'email-confirm';
     document.getElementById('email-status').textContent = `✓ Results sent to ${email}`;
   } catch (err) {
@@ -554,19 +566,6 @@ function displayResults(name, sorted, scores) {
   setTimeout(sendHeight, 300);
 }
 
-function buildEmailText(name, sorted, scores) {
-  let topText = '';
-  sorted.slice(0, 3).forEach(({ i }, idx) => {
-    const t = temperaments[i], s = scores[i];
-    topText += `<strong>${idx + 1}. ${t.name}</strong> &mdash; ${s}/24 (${getLevelLabel(s)})<br><em style="color:#8a6d45">${t.subtitle}</em><br>${t.desc}<br><br>`;
-  });
-  let allText = '';
-  sorted.forEach(({ i }, idx) => {
-    allText += `${idx + 1}. ${temperaments[i].name}: ${scores[i]}/24 &mdash; ${getLevelLabel(scores[i])}<br>`;
-  });
-  const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-  return { topText, allText, date };
-}
 
 function getLevel(s)      { return s >= 18 ? 'H' : s >= 12 ? 'M' : 'L'; }
 function getLevelLabel(s) { return s >= 18 ? 'High' : s >= 12 ? 'Moderate' : 'Low'; }
