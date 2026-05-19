@@ -558,11 +558,11 @@ function buildEmailText(name, sorted, scores) {
   let topText = '';
   sorted.slice(0, 3).forEach(({ i }, idx) => {
     const t = temperaments[i], s = scores[i];
-    topText += `${idx + 1}. ${t.name} — ${s}/24 (${getLevelLabel(s)})\n   ${t.subtitle}\n   ${t.desc}\n\n`;
+    topText += `<strong>${idx + 1}. ${t.name}</strong> &mdash; ${s}/24 (${getLevelLabel(s)})<br><em style="color:#8a6d45">${t.subtitle}</em><br>${t.desc}<br><br>`;
   });
   let allText = '';
   sorted.forEach(({ i }, idx) => {
-    allText += `${idx + 1}. ${temperaments[i].name}: ${scores[i]}/24 — ${getLevelLabel(scores[i])}\n`;
+    allText += `${idx + 1}. ${temperaments[i].name}: ${scores[i]}/24 &mdash; ${getLevelLabel(scores[i])}<br>`;
   });
   const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   return { topText, allText, date };
