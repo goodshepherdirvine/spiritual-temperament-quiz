@@ -28,174 +28,165 @@
     font-size: 16px;
     line-height: 1.6;
   }
-  .container { max-width: 700px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .container { max-width: 620px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
 
-  /* Header */
-  .header { text-align: center; margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
-  .header h1 { font-family: 'Lora', serif; font-size: 28px; font-weight: 400; color: var(--text); margin-bottom: .5rem; }
-  .header .verse { font-family: 'Lora', serif; font-style: italic; font-size: 14px; color: var(--text-muted); margin-top: .75rem; }
+  /* Page system */
+  .page { display: none; }
+  .page.active { display: block; }
 
-  /* Participant fields */
-  .participant-section { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.25rem; }
-  .participant-section h2 { font-family: 'Lora', serif; font-size: 16px; font-weight: 400; margin-bottom: 1rem; color: var(--text); }
+  /* Info page */
+  .participant-section {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.25rem;
+  }
+  .participant-section h2 {
+    font-family: 'Lora', serif; font-size: 20px; font-weight: 400;
+    margin-bottom: .5rem; color: var(--text);
+  }
   .participant-intro { font-size: 14px; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.65; }
   .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   @media(max-width:520px){ .field-row { grid-template-columns: 1fr; } }
   .field { display: flex; flex-direction: column; gap: 5px; }
   .field label { font-size: 13px; font-weight: 500; color: var(--text-muted); letter-spacing: .03em; text-transform: uppercase; }
   .field input {
-    padding: .55rem .75rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 15px;
-    color: var(--text);
-    background: var(--bg);
-    transition: border-color .2s;
+    padding: .55rem .75rem; border: 1px solid var(--border); border-radius: var(--radius);
+    font-family: 'Source Sans 3', sans-serif; font-size: 15px; color: var(--text);
+    background: var(--bg); transition: border-color .2s;
   }
   .field input:focus { outline: none; border-color: var(--gold); }
   .field input.error { border-color: var(--error); }
-
-  /* Scale legend */
-  .scale-legend {
-    display: flex; gap: 6px; flex-wrap: wrap;
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: .875rem 1rem;
-    margin-bottom: 1.25rem;
+  .warn-msg {
+    font-size: 13px; color: var(--error); background: #fdf0f0;
+    border: 1px solid #f5c5c5; border-radius: var(--radius);
+    padding: .625rem .875rem; margin-top: 1rem; display: none;
   }
-  .scale-legend .scale-item { font-size: 13px; color: var(--text-muted); }
-  .scale-legend .scale-item strong { color: var(--text); }
-  .scale-legend .sep { color: var(--border); }
-
-  /* Progress */
-  .progress-wrap { margin-bottom: 1.5rem; }
-  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
-  .progress-track { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-  .progress-fill { height: 4px; background: var(--gold); border-radius: 2px; transition: width .3s ease; width: 0%; }
-
-  /* Questions */
-  .q-block {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 1rem 1.25rem;
-    margin-bottom: 1rem; transition: border-color .2s;
-  }
-  .q-block.unanswered { border-color: var(--error); }
-  .q-num { font-size: 11px; color: var(--text-muted); letter-spacing: .05em; text-transform: uppercase; margin-bottom: .35rem; }
-  .q-text { font-size: 14px; color: var(--text); line-height: 1.65; margin-bottom: .875rem; }
-  .radio-row { display: flex; gap: 4px; }
-  .radio-row label {
-    flex: 1; display: flex; flex-direction: column; align-items: center;
-    gap: 4px; cursor: pointer; padding: .5rem .25rem;
-    border: 1px solid var(--border); border-radius: 6px;
-    transition: background .15s, border-color .15s;
-  }
-  .radio-row label:hover { background: var(--gold-light); border-color: var(--gold); }
-  .radio-row input[type=radio] { accent-color: var(--gold-dark); width: 16px; height: 16px; }
-  .radio-row .val { font-size: 13px; font-weight: 500; color: var(--text); }
-  .radio-row .lbl { font-size: 10px; color: var(--text-muted); text-align: center; line-height: 1.3; }
-  .radio-row input[type=radio]:checked + .val { color: var(--gold-dark); }
-
-  /* Page system */
-  .page { display: none; }
-  .page.active { display: block; }
-
-  /* Navigation */
-  .nav-row { display: flex; gap: .75rem; margin-top: 1.75rem; align-items: stretch; }
-  .btn-back {
-    padding: .75rem 1.25rem;
-    background: var(--white);
-    color: var(--text-muted);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 15px;
-    cursor: pointer;
-    transition: background .2s, border-color .2s, color .2s;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .btn-back:hover { background: var(--bg); border-color: var(--gold); color: var(--text); }
-  .btn-next {
-    flex: 1;
-    padding: .875rem;
-    background: var(--gold-dark);
-    color: var(--white);
-    border: none;
-    border-radius: var(--radius);
-    font-family: 'Lora', serif;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background .2s, transform .1s;
-    letter-spacing: .02em;
-  }
-  .btn-next:hover { background: var(--gold); }
-  .btn-next:active { transform: scale(.99); }
   .btn-begin {
-    width: 100%;
-    padding: .875rem;
-    background: var(--gold-dark);
-    color: var(--white);
-    border: none;
-    border-radius: var(--radius);
-    font-family: 'Lora', serif;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background .2s, transform .1s;
-    letter-spacing: .02em;
-    margin-top: .25rem;
+    width: 100%; padding: .875rem; background: var(--gold-dark); color: var(--white);
+    border: none; border-radius: var(--radius); font-family: 'Lora', serif; font-size: 16px;
+    cursor: pointer; transition: background .2s, transform .1s; letter-spacing: .02em; margin-top: .25rem;
   }
   .btn-begin:hover { background: var(--gold); }
   .btn-begin:active { transform: scale(.99); }
 
-  /* Submit */
-  .btn-submit {
-    flex: 1;
-    padding: .875rem;
+  /* Question stage */
+  .q-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: .875rem;
+  }
+  .btn-back {
+    display: flex; align-items: center; gap: 5px; padding: .4rem .75rem;
+    background: transparent; color: var(--text-muted); border: 1px solid var(--border);
+    border-radius: var(--radius); font-family: 'Source Sans 3', sans-serif; font-size: 13px;
+    cursor: pointer; transition: background .15s, border-color .15s, color .15s; flex-shrink: 0;
+  }
+  .btn-back:hover { background: var(--bg); border-color: var(--gold); color: var(--text); }
+  .q-counter { font-size: 13px; color: var(--text-muted); }
+
+  .progress-wrap { margin-bottom: 2rem; }
+  .progress-track { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 4px; background: var(--gold); border-radius: 2px; transition: width .4s ease; width: 0%; }
+
+  /* Animations */
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(36px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-36px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .q-stage.enter-forward { animation: slideInRight .22s ease both; }
+  .q-stage.enter-back    { animation: slideInLeft  .22s ease both; }
+
+  .q-text {
+    font-family: 'Lora', serif; font-size: 18px; font-weight: 400;
+    color: var(--text); line-height: 1.7; margin-bottom: 1.5rem;
+  }
+  @media(max-width:520px){ .q-text { font-size: 16px; } }
+
+  /* Answer buttons */
+  .answer-list { display: flex; flex-direction: column; gap: .5rem; }
+  .answer-btn {
+    display: flex; align-items: center; gap: .875rem; width: 100%;
+    padding: .875rem 1rem; background: var(--white); border: 1.5px solid var(--border);
+    border-radius: var(--radius); cursor: pointer; text-align: left;
+    transition: background .15s, border-color .15s; font-family: 'Source Sans 3', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .answer-btn:hover { background: var(--gold-light); border-color: var(--gold); }
+  .answer-btn:active { transform: scale(.99); }
+  .answer-btn.selected { background: var(--gold-light); border-color: var(--gold-dark); }
+  .answer-num {
+    display: flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--bg); border: 1.5px solid var(--border);
+    font-size: 13px; font-weight: 500; color: var(--text-muted);
+    flex-shrink: 0; transition: background .15s, border-color .15s, color .15s;
+  }
+  .answer-btn.selected .answer-num {
+    background: var(--gold-dark); border-color: var(--gold-dark); color: var(--white);
+  }
+  .answer-label { font-size: 15px; color: var(--text); }
+
+  .keyboard-hint { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 1.25rem; opacity: .5; }
+  @media(max-width:600px){ .keyboard-hint { display: none; } }
+
+  /* Confirmation screen */
+  .confirm-card { text-align: center; padding: 1rem 0 .5rem; }
+  .confirm-check {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--gold-light); border: 2px solid var(--gold);
+    font-size: 22px; color: var(--gold-dark); margin-bottom: 1.25rem;
+  }
+  .confirm-title {
+    font-family: 'Lora', serif; font-size: 20px; font-weight: 400;
+    color: var(--text); margin-bottom: .375rem;
+  }
+  .confirm-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 1.75rem; }
+  .btn-submit-final {
+    display: block; width: 100%; padding: .9rem;
     background: var(--gold-dark); color: var(--white);
     border: none; border-radius: var(--radius);
-    font-family: 'Lora', serif; font-size: 16px;
-    cursor: pointer; transition: background .2s, transform .1s;
-    letter-spacing: .02em;
+    font-family: 'Lora', serif; font-size: 16px; letter-spacing: .02em;
+    cursor: pointer; transition: background .2s, transform .1s; margin-bottom: .75rem;
   }
-  .btn-submit:hover { background: var(--gold); }
-  .btn-submit:active { transform: scale(.99); }
-  .btn-submit:disabled { background: var(--text-muted); cursor: not-allowed; }
+  .btn-submit-final:hover { background: var(--gold); }
+  .btn-submit-final:active { transform: scale(.99); }
+  .btn-back-review {
+    display: block; width: 100%; padding: .75rem;
+    background: var(--white); color: var(--text-muted);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    font-family: 'Source Sans 3', sans-serif; font-size: 14px;
+    cursor: pointer; transition: background .15s, border-color .15s, color .15s; margin-bottom: 1.5rem;
+  }
+  .btn-back-review:hover { background: var(--bg); border-color: var(--gold); color: var(--text); }
+  .btn-begin-again {
+    background: none; border: none; padding: 0;
+    font-size: 13px; color: var(--text-muted); cursor: pointer;
+    text-decoration: underline; text-decoration-color: var(--border);
+    text-underline-offset: 3px; transition: color .15s;
+  }
+  .btn-begin-again:hover { color: var(--text); }
 
-  /* Warn */
-  .warn-msg { font-size: 13px; color: var(--error); background: #fdf0f0; border: 1px solid #f5c5c5; border-radius: var(--radius); padding: .625rem .875rem; margin-top: 1rem; display: none; }
-
-  /* Sending state */
-  .sending-msg { text-align: center; font-size: 14px; color: var(--text-muted); margin-top: 1rem; display: none; }
+  /* Submitting */
+  .submitting-card { text-align: center; padding: 3rem 1rem; }
+  .submitting-card p { font-family: 'Lora', serif; font-size: 18px; color: var(--text); margin-bottom: .375rem; }
+  .submitting-card span { font-size: 14px; color: var(--text-muted); }
 
   /* Results */
-  .results { display: none; margin-top: 2.5rem; }
+  .results { display: none; }
   .results-header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
   .results-header h2 { font-family: 'Lora', serif; font-size: 22px; font-weight: 400; margin-bottom: .5rem; }
   .results-header p { font-size: 14px; color: var(--text-muted); }
   .email-confirm { display: inline-block; margin-top: .75rem; font-size: 13px; color: var(--success); background: #edf7f1; border: 1px solid #b8ddc9; border-radius: 20px; padding: 4px 14px; }
   .email-error { display: inline-block; margin-top: .75rem; font-size: 13px; color: var(--error); background: #fdf0f0; border: 1px solid #f5c5c5; border-radius: 20px; padding: 4px 14px; }
-
-  .section-label {
-    font-size: 11px; font-weight: 500; letter-spacing: .08em;
-    text-transform: uppercase; color: var(--text-muted);
-    margin: 1.5rem 0 .75rem;
-  }
-  .t-card {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 1rem 1.25rem;
-    margin-bottom: .75rem;
-  }
-  .t-card.highlighted {
-    border-color: var(--gold);
-    background: var(--gold-light);
-  }
+  .section-label { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin: 1.5rem 0 .75rem; }
+  .t-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: .75rem; }
+  .t-card.highlighted { border-color: var(--gold); background: var(--gold-light); }
   .t-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: .5rem; }
   .t-name-wrap { display: flex; align-items: center; gap: 8px; }
   .t-name { font-family: 'Lora', serif; font-size: 16px; font-weight: 400; color: var(--text); }
-  .badge {
-    font-size: 11px; padding: 2px 10px; border-radius: 20px;
-    font-weight: 500; letter-spacing: .02em;
-  }
+  .badge { font-size: 11px; padding: 2px 10px; border-radius: 20px; font-weight: 500; letter-spacing: .02em; }
   .badge-H { background: #b8976a22; color: var(--gold-dark); border: 1px solid var(--gold); }
   .badge-M { background: #edf7f1; color: var(--success); border: 1px solid #b8ddc9; }
   .badge-L { background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
@@ -204,17 +195,10 @@
   .t-bar-fill { height: 6px; border-radius: 3px; transition: width .8s ease; }
   .t-subtitle { font-size: 13px; color: var(--gold-dark); font-style: italic; font-family: 'Lora', serif; margin-bottom: .25rem; }
   .t-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
-
   .legend-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 1.25rem; }
   .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
   .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
-
-  .closing-verse {
-    margin-top: 2rem; padding: 1.25rem 1.5rem;
-    border-left: 3px solid var(--gold);
-    background: var(--white);
-    border-radius: 0 var(--radius) var(--radius) 0;
-  }
+  .closing-verse { margin-top: 2rem; padding: 1.25rem 1.5rem; border-left: 3px solid var(--gold); background: var(--white); border-radius: 0 var(--radius) var(--radius) 0; }
   .closing-verse p { font-family: 'Lora', serif; font-style: italic; font-size: 14px; color: var(--text-muted); line-height: 1.7; }
   .closing-verse cite { font-size: 12px; color: var(--gold-dark); font-style: normal; display: block; margin-top: .5rem; }
 </style>
@@ -222,11 +206,11 @@
 <body>
 <div class="container">
 
-  <!-- Page 0: Participant Info -->
+  <!-- Page 0: Info -->
   <div id="page-0" class="page active">
     <div class="participant-section">
-      <h2>Your Information</h2>
-      <p class="participant-intro">This inventory includes 54 statements about how people experience God. Rate each statement on a scale of 0–4 based on how true it is for you. There are no right or wrong answers — answer honestly based on your actual experience, not how you think you should respond.</p>
+      <h2>Spiritual Temperament Inventory</h2>
+      <p class="participant-intro">Rate 54 short statements on a scale of 0–4 based on how true each is for you. There are no right or wrong answers — answer honestly based on your actual experience.</p>
       <div class="field-row">
         <div class="field">
           <label for="taker-name">Full Name</label>
@@ -239,32 +223,21 @@
       </div>
     </div>
     <div class="warn-msg" id="warn-0"></div>
-    <button class="btn-begin" onclick="goNext()">Begin Survey →</button>
+    <button class="btn-begin" onclick="startQuiz()">Begin →</button>
   </div>
 
-  <!-- Survey meta: scale legend + progress bar (shown on question pages) -->
-  <div id="survey-meta" style="display:none">
-    <div class="scale-legend">
-      <span class="scale-item"><strong>4</strong> = Very true</span><span class="sep">·</span>
-      <span class="scale-item"><strong>3</strong> = Often true</span><span class="sep">·</span>
-      <span class="scale-item"><strong>2</strong> = Sometimes true</span><span class="sep">·</span>
-      <span class="scale-item"><strong>1</strong> = Rarely true</span><span class="sep">·</span>
-      <span class="scale-item"><strong>0</strong> = Never true</span>
+  <!-- Question stage -->
+  <div id="question-stage" style="display:none">
+    <div class="q-header">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+      <span class="q-counter" id="q-counter">Question 1 of 54</span>
     </div>
     <div class="progress-wrap">
-      <div class="progress-label">
-        <span id="page-indicator">Page 1 of 11</span>
-        <span id="prog-text">0 of 54 answered</span>
-      </div>
       <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
     </div>
+    <div id="q-stage" class="q-stage"></div>
+    <p class="keyboard-hint">Press 0–4 on your keyboard to answer</p>
   </div>
-
-  <!-- Question pages (generated by JS) -->
-  <div id="question-pages"></div>
-
-  <!-- Sending state -->
-  <div class="sending-msg" id="sending">Sending your results by email…</div>
 
   <!-- Results -->
   <div class="results" id="results">
@@ -286,11 +259,10 @@
   </div>
 
 </div>
-
 <script>
 try { emailjs.init({ publicKey: "IdsiIh_c_Ja1a5ZHP" }); } catch(e) {}
 
-const SERVICE_ID = "service_m113odb";
+const SERVICE_ID  = "service_m113odb";
 const TEMPLATE_ID = "template_mj887oq";
 
 const questions = [
@@ -351,117 +323,39 @@ const questions = [
 ];
 
 const temperaments = [
-  { name: "Activist",      subtitle: "Loving God through confrontation with evil",     desc: "Bold desire to see injustice challenged and good prevail. Energized by courageously coming against evil and rallying for the good.", qNums: [1,10,19,28,37,46] },
-  { name: "Ascetic",       subtitle: "Loving God through solitude and simplicity",      desc: "Values silence, stillness, and simplicity. Develops a rich inner life through ordered discipline, self-denial, and hard work done unto the Lord.", qNums: [2,11,20,29,38,47] },
-  { name: "Caregiver",     subtitle: "Loving God through serving others",               desc: "Discerns practical needs and moves to address them. Feels most alive and close to God when in volunteer service, knowing the Kingdom is being advanced.", qNums: [3,12,21,30,39,48] },
-  { name: "Contemplative", subtitle: "Loving God through adoration",                   desc: "Enjoys extended time simply delighting in God's presence and love. All of life is about developing greater intimacy with Jesus.", qNums: [4,13,22,31,40,49] },
-  { name: "Enthusiast",    subtitle: "Loving God through mystery and celebration",      desc: "Loves God with gusto — a cheerleader for the faith. Feels close to God when gathering people to sing, worship, and celebrate.", qNums: [5,14,23,32,41,50] },
-  { name: "Intellectual",  subtitle: "Loving God through the mind",                    desc: "Loves God best through deep study and careful thought about Scripture and truth. Right thinking is essential; gets bored when the mind is not stimulated.", qNums: [6,15,24,33,42,51] },
-  { name: "Naturalist",    subtitle: "Loving God through experiencing Him outdoors",    desc: "Comes alive and experiences great awareness of God when surrounded by the splendor of creation. The outdoors is a classroom for the soul.", qNums: [7,16,25,34,43,52] },
-  { name: "Sensate",       subtitle: "Loving God through the senses",                  desc: "Uses all senses — taste, touch, smell, sound, and sight — to focus more fully on Jesus. Drawn to beauty: architecture, music, art, incense, and stained glass.", qNums: [8,17,26,35,44,53] },
-  { name: "Traditionalist",subtitle: "Loving God through ritual and symbol",           desc: "Enjoys faith practices done in familiar, meaningful ways. Rituals and traditions connect to the saints of old and usher in God's presence.", qNums: [9,18,27,36,45,54] }
+  { name: "Activist",       subtitle: "Loving God through confrontation with evil",     desc: "Bold desire to see injustice challenged and good prevail. Energized by courageously coming against evil and rallying for the good.", qNums: [1,10,19,28,37,46] },
+  { name: "Ascetic",        subtitle: "Loving God through solitude and simplicity",      desc: "Values silence, stillness, and simplicity. Develops a rich inner life through ordered discipline, self-denial, and hard work done unto the Lord.", qNums: [2,11,20,29,38,47] },
+  { name: "Caregiver",      subtitle: "Loving God through serving others",               desc: "Discerns practical needs and moves to address them. Feels most alive and close to God when in volunteer service, knowing the Kingdom is being advanced.", qNums: [3,12,21,30,39,48] },
+  { name: "Contemplative",  subtitle: "Loving God through adoration",                   desc: "Enjoys extended time simply delighting in God's presence and love. All of life is about developing greater intimacy with Jesus.", qNums: [4,13,22,31,40,49] },
+  { name: "Enthusiast",     subtitle: "Loving God through mystery and celebration",      desc: "Loves God with gusto — a cheerleader for the faith. Feels close to God when gathering people to sing, worship, and celebrate.", qNums: [5,14,23,32,41,50] },
+  { name: "Intellectual",   subtitle: "Loving God through the mind",                    desc: "Loves God best through deep study and careful thought about Scripture and truth. Right thinking is essential; gets bored when the mind is not stimulated.", qNums: [6,15,24,33,42,51] },
+  { name: "Naturalist",     subtitle: "Loving God through experiencing Him outdoors",    desc: "Comes alive and experiences great awareness of God when surrounded by the splendor of creation. The outdoors is a classroom for the soul.", qNums: [7,16,25,34,43,52] },
+  { name: "Sensate",        subtitle: "Loving God through the senses",                  desc: "Uses all senses — taste, touch, smell, sound, and sight — to focus more fully on Jesus. Drawn to beauty: architecture, music, art, incense, and stained glass.", qNums: [8,17,26,35,44,53] },
+  { name: "Traditionalist", subtitle: "Loving God through ritual and symbol",           desc: "Enjoys faith practices done in familiar, meaningful ways. Rituals and traditions connect to the saints of old and usher in God's presence.", qNums: [9,18,27,36,45,54] }
 ];
 
-const QPER_PAGE = 5;
-const Q_PAGES = Math.ceil(questions.length / QPER_PAGE); // 11
-let currentPage = 0;
+const ANSWER_LABELS = ['Never true', 'Rarely true', 'Sometimes true', 'Often true', 'Very true'];
 
-// Build a single question block element (0-indexed)
-function buildQuestionBlock(i) {
-  const d = document.createElement('div');
-  d.className = 'q-block';
-  d.id = `qblock-${i + 1}`;
-  const labels = ['Never', 'Rarely', 'Sometimes', 'Often', 'Very true'];
-  let radios = '<div class="radio-row">';
-  for (let v = 0; v <= 4; v++) {
-    radios += `<label>
-      <input type="radio" name="q${i + 1}" value="${v}" onchange="updateProgress()">
-      <span class="val">${v}</span>
-      <span class="lbl">${labels[v]}</span>
-    </label>`;
-  }
-  radios += '</div>';
-  d.innerHTML = `<div class="q-num">Question ${i + 1} of 54</div><div class="q-text">${questions[i]}</div>${radios}`;
-  return d;
-}
-
-// Build all question pages into the DOM
-(function buildQuestionPages() {
-  const container = document.getElementById('question-pages');
-  for (let p = 1; p <= Q_PAGES; p++) {
-    const pageEl = document.createElement('div');
-    pageEl.className = 'page';
-    pageEl.id = `page-${p}`;
-
-    const qStart = (p - 1) * QPER_PAGE;
-    const qEnd = Math.min(qStart + QPER_PAGE, questions.length);
-    for (let i = qStart; i < qEnd; i++) {
-      pageEl.appendChild(buildQuestionBlock(i));
-    }
-
-    // Warn message
-    const warn = document.createElement('div');
-    warn.className = 'warn-msg';
-    warn.id = `warn-${p}`;
-    pageEl.appendChild(warn);
-
-    // Navigation row
-    const nav = document.createElement('div');
-    nav.className = 'nav-row';
-
-    const backBtn = document.createElement('button');
-    backBtn.className = 'btn-back';
-    backBtn.textContent = '← Back';
-    backBtn.onclick = goBack;
-    nav.appendChild(backBtn);
-
-    if (p < Q_PAGES) {
-      const nextBtn = document.createElement('button');
-      nextBtn.className = 'btn-next';
-      nextBtn.textContent = 'Next →';
-      nextBtn.onclick = goNext;
-      nav.appendChild(nextBtn);
-    } else {
-      const submitBtn = document.createElement('button');
-      submitBtn.className = 'btn-submit';
-      submitBtn.id = 'submit-btn';
-      submitBtn.textContent = 'Submit & View My Results';
-      submitBtn.onclick = submitForm;
-      nav.appendChild(submitBtn);
-    }
-
-    pageEl.appendChild(nav);
-    container.appendChild(pageEl);
-  }
-})();
+const answers = new Array(54).fill(null);
+let currentPage = 0; // 0=info, 1-54=questions
+let advancing = false; // prevent double-tap
 
 function sendHeight() {
   window.parent.postMessage({ type: 'quizResize', height: document.documentElement.scrollHeight }, '*');
 }
-
-function showPage(n) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(`page-${n}`).classList.add('active');
-  currentPage = n;
-
-  document.getElementById('survey-meta').style.display = (n >= 1) ? 'block' : 'none';
-
-  updateProgress();
-  window.scrollTo(0, 0);
-  setTimeout(sendHeight, 50);
-}
-
 window.addEventListener('load', sendHeight);
 
-function validateInfo() {
-  const nameEl = document.getElementById('taker-name');
-  const emailEl = document.getElementById('taker-email');
-  const name = nameEl.value.trim();
-  const email = emailEl.value.trim();
-  const errors = [];
+// ── Validation ──────────────────────────────────────────────────────────────
 
-  if (!name) { nameEl.classList.add('error'); errors.push('name'); }
-  else { nameEl.classList.remove('error'); }
+function validateInfo() {
+  const nameEl  = document.getElementById('taker-name');
+  const emailEl = document.getElementById('taker-email');
+  const name    = nameEl.value.trim();
+  const email   = emailEl.value.trim();
+  const errors  = [];
+
+  if (!name)  { nameEl.classList.add('error');  errors.push('name'); }
+  else          nameEl.classList.remove('error');
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     emailEl.classList.add('error'); errors.push('valid email address');
@@ -477,128 +371,166 @@ function validateInfo() {
   return true;
 }
 
-function validateCurrentQuestions() {
-  const qStart = (currentPage - 1) * QPER_PAGE + 1;
-  const qEnd = Math.min(qStart + QPER_PAGE - 1, 54);
-  const missing = [];
+// ── Navigation ───────────────────────────────────────────────────────────────
 
-  for (let i = qStart; i <= qEnd; i++) {
-    const block = document.getElementById(`qblock-${i}`);
-    if (!document.querySelector(`input[name="q${i}"]:checked`)) {
-      missing.push(i);
-      block.classList.add('unanswered');
-    } else {
-      block.classList.remove('unanswered');
-    }
-  }
-
-  const warn = document.getElementById(`warn-${currentPage}`);
-  if (missing.length) {
-    warn.textContent = `Please answer all questions before continuing. Missing: ${missing.join(', ')}.`;
-    warn.style.display = 'block';
-    return false;
-  }
-  warn.style.display = 'none';
-  return true;
-}
-
-function goNext() {
-  if (currentPage === 0) {
-    if (!validateInfo()) return;
-    showPage(1);
-  } else if (currentPage < Q_PAGES) {
-    if (!validateCurrentQuestions()) return;
-    showPage(currentPage + 1);
-  }
+function startQuiz() {
+  if (!validateInfo()) return;
+  showQuestion(1, 'forward');
 }
 
 function goBack() {
-  if (currentPage > 0) showPage(currentPage - 1);
-}
-
-function updateProgress() {
-  let n = 0;
-  for (let i = 1; i <= 54; i++) {
-    if (document.querySelector(`input[name="q${i}"]:checked`)) n++;
-  }
-  document.getElementById('prog').style.width = (n / 54 * 100) + '%';
-  document.getElementById('prog-text').textContent = `${n} of 54 answered`;
-  if (currentPage >= 1) {
-    document.getElementById('page-indicator').textContent = `Page ${currentPage} of ${Q_PAGES}`;
+  if (currentPage === 55) {
+    showQuestion(54, 'back');
+  } else if (currentPage <= 1) {
+    document.getElementById('question-stage').style.display = 'none';
+    document.getElementById('page-0').classList.add('active');
+    currentPage = 0;
+    setTimeout(sendHeight, 50);
+  } else {
+    showQuestion(currentPage - 1, 'back');
   }
 }
 
-function getLevel(s) { return s >= 18 ? 'H' : s >= 12 ? 'M' : 'L'; }
-function getLevelLabel(s) { return s >= 18 ? 'High' : s >= 12 ? 'Moderate' : 'Low'; }
-function getBarColor(s) { return s >= 18 ? 'var(--gold)' : s >= 12 ? '#3a7d56' : '#aaa'; }
+function showConfirmation() {
+  advancing = false;
+  currentPage = 55;
 
-function buildEmailText(name, sorted, scores) {
-  const top = sorted.slice(0, 3);
-  let topText = '';
-  top.forEach(({ i }, idx) => {
-    const t = temperaments[i];
-    const s = scores[i];
-    topText += `${idx + 1}. ${t.name} — ${s}/24 (${getLevelLabel(s)})\n   ${t.subtitle}\n   ${t.desc}\n\n`;
-  });
-  let allText = '';
-  sorted.forEach(({ i }, idx) => {
-    const t = temperaments[i];
-    const s = scores[i];
-    allText += `${idx + 1}. ${t.name}: ${s}/24 — ${getLevelLabel(s)}\n`;
-  });
-  const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-  return { topText, allText, date };
+  document.getElementById('q-counter').textContent = 'All done';
+  document.getElementById('prog').style.width = '100%';
+
+  const qStage = document.getElementById('q-stage');
+  qStage.innerHTML = `
+    <div class="confirm-card">
+      <div class="confirm-check">✓</div>
+      <p class="confirm-title">All 54 questions answered</p>
+      <p class="confirm-sub">Ready to discover how God has wired you?</p>
+      <button class="btn-submit-final" onclick="submitQuiz()">Submit &amp; See My Results</button>
+      <button class="btn-back-review" onclick="showQuestion(54, 'back')">← Back to review your answers</button>
+      <button class="btn-begin-again" onclick="resetQuiz()">Start the inventory over</button>
+    </div>`;
+  qStage.className = 'q-stage enter-forward';
+
+  window.scrollTo(0, 0);
+  setTimeout(sendHeight, 50);
 }
 
-async function submitForm() {
-  if (!validateCurrentQuestions()) return;
+function resetQuiz() {
+  answers.fill(null);
+  advancing = false;
+  currentPage = 0;
+  document.getElementById('question-stage').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('prog').style.width = '0%';
+  document.getElementById('page-0').classList.add('active');
+  setTimeout(sendHeight, 50);
+}
 
-  const name = document.getElementById('taker-name').value.trim();
-  const email = document.getElementById('taker-email').value.trim();
+function showQuestion(n, dir) {
+  advancing = false;
+  currentPage = n;
 
-  // Calculate scores
+  document.getElementById('page-0').classList.remove('active');
+  const stage = document.getElementById('question-stage');
+  stage.style.display = 'block';
+
+  document.getElementById('q-counter').textContent = `Question ${n} of 54`;
+
+  const answered = answers.filter(a => a !== null).length;
+  document.getElementById('prog').style.width = `${answered / 54 * 100}%`;
+
+  const labels  = ANSWER_LABELS;
+  const current = answers[n - 1];
+
+  let html = `<div class="q-text">${questions[n - 1]}</div><div class="answer-list">`;
+  for (let v = 0; v <= 4; v++) {
+    const sel = current === v ? ' selected' : '';
+    html += `<button class="answer-btn${sel}" data-value="${v}" onclick="handleAnswer(${n},${v})">
+      <span class="answer-num">${v}</span>
+      <span class="answer-label">${labels[v]}</span>
+    </button>`;
+  }
+  html += '</div>';
+
+  const qStage = document.getElementById('q-stage');
+  qStage.innerHTML = html;
+  qStage.className = 'q-stage';
+  requestAnimationFrame(() => qStage.classList.add(dir === 'back' ? 'enter-back' : 'enter-forward'));
+
+  window.scrollTo(0, 0);
+  setTimeout(sendHeight, 50);
+}
+
+// ── Answer handling ──────────────────────────────────────────────────────────
+
+function handleAnswer(n, value) {
+  if (advancing) return;
+  advancing = true;
+
+  answers[n - 1] = value;
+
+  document.querySelectorAll('.answer-btn').forEach(btn => {
+    btn.classList.toggle('selected', parseInt(btn.dataset.value) === value);
+  });
+
+  const answered = answers.filter(a => a !== null).length;
+  document.getElementById('prog').style.width = `${answered / 54 * 100}%`;
+
+  setTimeout(() => {
+    if (n < 54) {
+      showQuestion(n + 1, 'forward');
+    } else {
+      showConfirmation();
+    }
+  }, 380);
+}
+
+// Keyboard support (0–4)
+document.addEventListener('keydown', function(e) {
+  if (currentPage >= 1 && currentPage <= 54 && !advancing) {
+    const val = parseInt(e.key);
+    if (!isNaN(val) && val >= 0 && val <= 4) handleAnswer(currentPage, val);
+  }
+});
+
+// ── Submit & results ─────────────────────────────────────────────────────────
+
+async function submitQuiz() {
+  document.getElementById('q-stage').innerHTML = `
+    <div class="submitting-card">
+      <p>Calculating your results…</p>
+      <span>Just a moment</span>
+    </div>`;
+  setTimeout(sendHeight, 50);
+
   const scores = Array(9).fill(0);
-  for (let i = 1; i <= 54; i++) {
-    const v = parseInt(document.querySelector(`input[name="q${i}"]:checked`).value);
-    const tIdx = temperaments.findIndex(t => t.qNums.includes(i));
-    if (tIdx >= 0) scores[tIdx] += v;
+  for (let i = 0; i < 54; i++) {
+    const tIdx = temperaments.findIndex(t => t.qNums.includes(i + 1));
+    if (tIdx >= 0 && answers[i] !== null) scores[tIdx] += answers[i];
   }
   const sorted = scores.map((s, i) => ({ s, i })).sort((a, b) => b.s - a.s);
 
-  // Show results
+  const name  = document.getElementById('taker-name').value.trim();
+  const email = document.getElementById('taker-email').value.trim();
+
   displayResults(name, sorted, scores);
 
-  // Send email
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Sending…';
-  document.getElementById('sending').style.display = 'block';
-
   const { topText, allText, date } = buildEmailText(name, sorted, scores);
-
   try {
     await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-      taker_name: name,
-      taker_email: email,
-      to_email: email,
-      submitted_date: date,
-      top_temperaments: topText,
-      all_scores: allText
+      taker_name: name, taker_email: email, to_email: email,
+      submitted_date: date, top_temperaments: topText, all_scores: allText
     });
-    document.getElementById('email-status').className = 'email-confirm';
+    document.getElementById('email-status').className   = 'email-confirm';
     document.getElementById('email-status').textContent = `✓ Results sent to ${email}`;
   } catch (err) {
-    document.getElementById('email-status').className = 'email-error';
+    document.getElementById('email-status').className   = 'email-error';
     document.getElementById('email-status').textContent = 'Email could not be sent — please screenshot your results.';
     console.error('EmailJS error:', err);
   }
-
-  document.getElementById('sending').style.display = 'none';
-  btn.disabled = false;
-  btn.textContent = 'Submit & View My Results';
 }
 
 function displayResults(name, sorted, scores) {
+  document.getElementById('question-stage').style.display = 'none';
   document.getElementById('results-name').textContent = `Results for ${name}`;
 
   const cards = document.getElementById('result-cards');
@@ -608,42 +540,55 @@ function displayResults(name, sorted, scores) {
   topLabel.className = 'section-label';
   topLabel.textContent = 'Your top temperaments';
   cards.appendChild(topLabel);
-
-  sorted.slice(0, 3).forEach(({ i }) => {
-    cards.appendChild(buildCard(i, scores[i], true));
-  });
+  sorted.slice(0, 3).forEach(({ i }) => cards.appendChild(buildCard(i, scores[i], true)));
 
   const allLabel = document.createElement('div');
   allLabel.className = 'section-label';
   allLabel.textContent = 'All temperaments ranked';
   cards.appendChild(allLabel);
-
-  sorted.forEach(({ i }) => {
-    cards.appendChild(buildCard(i, scores[i], false));
-  });
+  sorted.forEach(({ i }) => cards.appendChild(buildCard(i, scores[i], false)));
 
   const results = document.getElementById('results');
   results.style.display = 'block';
   results.scrollIntoView({ behavior: 'smooth' });
+  setTimeout(sendHeight, 300);
 }
 
+function buildEmailText(name, sorted, scores) {
+  let topText = '';
+  sorted.slice(0, 3).forEach(({ i }, idx) => {
+    const t = temperaments[i], s = scores[i];
+    topText += `${idx + 1}. ${t.name} — ${s}/24 (${getLevelLabel(s)})\n   ${t.subtitle}\n   ${t.desc}\n\n`;
+  });
+  let allText = '';
+  sorted.forEach(({ i }, idx) => {
+    allText += `${idx + 1}. ${temperaments[i].name}: ${scores[i]}/24 — ${getLevelLabel(scores[i])}\n`;
+  });
+  const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  return { topText, allText, date };
+}
+
+function getLevel(s)      { return s >= 18 ? 'H' : s >= 12 ? 'M' : 'L'; }
+function getLevelLabel(s) { return s >= 18 ? 'High' : s >= 12 ? 'Moderate' : 'Low'; }
+function getBarColor(s)   { return s >= 18 ? 'var(--gold)' : s >= 12 ? '#3a7d56' : '#aaa'; }
 
 function buildCard(i, score, highlight) {
-  const t = temperaments[i];
+  const t   = temperaments[i];
   const pct = Math.round(score / 24 * 100);
-  const level = getLevel(score);
   const card = document.createElement('div');
   card.className = 't-card' + (highlight ? ' highlighted' : '');
   card.innerHTML = `
     <div class="t-top-row">
       <div class="t-name-wrap">
         <span class="t-name">${t.name}</span>
-        <span class="badge badge-${level}">${getLevelLabel(score)}</span>
+        <span class="badge badge-${getLevel(score)}">${getLevelLabel(score)}</span>
       </div>
       <span class="t-score-label">${score} / 24</span>
     </div>
     <div class="t-bar-bg"><div class="t-bar-fill" style="width:${pct}%;background:${getBarColor(score)}"></div></div>
-    ${highlight ? `<div class="t-subtitle">${t.subtitle}</div><div class="t-desc">${t.desc}</div>` : `<div class="t-desc" style="font-size:12px;color:var(--text-muted)">${t.subtitle}</div>`}
+    ${highlight
+      ? `<div class="t-subtitle">${t.subtitle}</div><div class="t-desc">${t.desc}</div>`
+      : `<div class="t-desc" style="font-size:12px;color:var(--text-muted)">${t.subtitle}</div>`}
   `;
   return card;
 }
